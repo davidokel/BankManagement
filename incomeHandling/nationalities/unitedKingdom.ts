@@ -1,10 +1,10 @@
 enum studentLoanScheme {
+    noLoan,
     type1,
     type2,
 }
 
 enum nationalInsuranceClassification {
-    noLoan,
     classOne,
     classTwo,
     classThree,
