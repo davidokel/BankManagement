@@ -1,21 +1,21 @@
-enum studentLoanScheme {
+enum StudentLoanScheme {
     noLoan,
     type1,
     type2,
 }
 
-enum nationalInsuranceClassification {
+enum NationalInsuranceClassification {
     classOne,
     classTwo,
     classThree,
     classFour,
 }
 
-class unitedKingdomIncome extends incomeStream implements IIncomeSteam {
-    nationalInsuranceClass: nationalInsuranceClassification;
-    studentLoanScheme: studentLoanScheme;
+class UnitedKingdomIncome extends IncomeStream implements IIncomeSteam {
+    nationalInsuranceClass: NationalInsuranceClassification;
+    studentLoanScheme: StudentLoanScheme;
 
-    constructor(studentLoanType: studentLoanScheme, nationalInsuranceClass: nationalInsuranceClassification, period: incomePeriod, incomeAmount: number, numberOfPeriods: number = 0, pensionPlan: number) {
+    constructor(studentLoanType: StudentLoanScheme, nationalInsuranceClass: NationalInsuranceClassification, period: TimePeriod, incomeAmount: number, numberOfPeriods: number = 0, pensionPlan: number) {
         const taxSystem = {
             taxAllowance: 12570,
             taxBrackets: [

@@ -1,11 +1,12 @@
-enum incomePeriod {
+enum TimePeriod {
     Hourly,
     Daily,
+    Weekly,
     Monthly,
     Yearly,
 }
 
-type taxSystem = {
+type TaxSystem = {
     taxAllowance: number,
     taxBrackets: Array<{upperCutOff: number, percentage: number}>,
     maxTaxRate: number,
@@ -17,8 +18,8 @@ interface IIncomeSteam {
     readonly taxDeductions: number;
 }
 
-class incomeStream {
-    protected readonly taxSystem: taxSystem;
+class IncomeStream {
+    protected readonly taxSystem: TaxSystem;
     readonly annualPensionContribution;
     grossAnnualIncome: number;
 
@@ -30,8 +31,8 @@ class incomeStream {
      * @param pensionPlan pass as percentage value (full not divided by 100)
      * @param taxSystem
      */
-    constructor(period: incomePeriod, incomeAmount: number, numberOfPeriods: number = 0, pensionPlan: number, taxSystem: taxSystem) {
-        if ((period === incomePeriod.Daily || period === incomePeriod.Hourly) && numberOfPeriods === 0) {
+    constructor(period: TimePeriod, incomeAmount: number, numberOfPeriods: number = 0, pensionPlan: number, taxSystem: TaxSystem) {
+        if ((period === TimePeriod.Daily || period === TimePeriod.Hourly) && numberOfPeriods === 0) {
             throw new Error("Please pass the number of periods if using daily or hourly rate")
         }
         if (pensionPlan >= 100 || pensionPlan < 0) {
@@ -42,14 +43,17 @@ class incomeStream {
 
         let annualRate;
         switch (period) {
-            case incomePeriod.Hourly:
-            case incomePeriod.Daily:
+            case TimePeriod.Hourly:
+            case TimePeriod.Daily:
                 annualRate = incomeAmount * numberOfPeriods * 52;
                 break;
-            case incomePeriod.Monthly:
+            case TimePeriod.Weekly:
+                annualRate = incomeAmount * 52;
+                break;
+            case TimePeriod.Monthly:
                 annualRate = incomeAmount * 12;
                 break;
-            case incomePeriod.Yearly:
+            case TimePeriod.Yearly:
                 annualRate = incomeAmount;
                 break;
         }
