@@ -57,14 +57,14 @@ class UnitedKingdomIncome extends IncomeStream implements IIncomeSteam {
         }
     }
 
-    private calculateStudentLoanDeductions(cutOff: number, rate: number): number {
+    private calculateStudentLoanDeductions(weeklyCutOff: number, rate: number): number {
         const weeklyRate = this.weeklyGrossIncome; //todo implement if multiple loans are being repaid
 
-        if (weeklyRate < cutOff) {
+        if (weeklyRate < weeklyCutOff) {
             return 0;
         }
 
-        return (weeklyRate - cutOff) * rate * 52;
+        return (weeklyRate - weeklyCutOff) * rate * 52;
     }
 
     private nationalInsuranceClassOneDeductions(): number {
