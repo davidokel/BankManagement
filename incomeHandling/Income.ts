@@ -14,7 +14,11 @@ type TaxSystem = {
 
 interface IIncomeSteam {
     readonly grossAnnualIncome: number;
-    readonly netIncome: number;
+    readonly netAnnualIncome: number;
+    readonly weeklyGrossIncome: number;
+    readonly weeklyNetIncome: number;
+    readonly monthlyGrossIncome: number;
+    readonly monthlyNetIncome: number;
     readonly taxDeductions: number;
 }
 
@@ -61,8 +65,24 @@ class IncomeStream {
         this.annualPensionContribution = annualRate * (pensionPlan / 100);
     }
 
-    get netIncome(): number {
+    get netAnnualIncome(): number {
         return this.grossAnnualIncome - this.taxDeductions - this.annualPensionContribution;
+    }
+
+    get weeklyGrossIncome(): number {
+        return this.grossAnnualIncome/52;
+    }
+
+    get weeklyNetIncome(): number {
+        return this.netAnnualIncome/52;
+    }
+
+    get monthlyGrossIncome(): number {
+        return this.grossAnnualIncome/12;
+    }
+
+    get monthlyNetIncome(): number {
+        return this.netAnnualIncome/12;
     }
 
     get taxDeductions(): number {
@@ -70,11 +90,11 @@ class IncomeStream {
         let deductions = 0;
         for (const bracket of this.taxSystem.taxBrackets) {
             let incomeInBracket = taxableIncome > bracket.upperCutOff? bracket.upperCutOff : taxableIncome;
-            deductions += incomeInBracket * (bracket.percentage)/100;
+            deductions += incomeInBracket * bracket.percentage;
             taxableIncome -= incomeInBracket;
         }
         if (taxableIncome > 0) {
-            deductions += taxableIncome * (this.taxSystem.maxTaxRate)/100;
+            deductions += taxableIncome * this.taxSystem.maxTaxRate;
         }
 
         return deductions;
